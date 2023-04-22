@@ -6,6 +6,11 @@
 
 const unsigned int KEY_LEN = 260;
 
+typedef enum {
+    SUCCESS,
+    FAIL
+} TReturnVal;
+
 typedef struct _TNode {
     struct _TNode *left;
     struct _TNode *right;
@@ -27,8 +32,8 @@ typedef struct {
 
 TTreap            TreapCreate();
 TNode             *TreapFind(TTreap *treap, const char *key);
-int               TreapInsert(TTreap *treap, const char *key, uint64_t value);
-int               TreapRemove(TTreap *treap, char *key);
+TReturnVal        TreapInsert(TTreap *treap, const char *key, uint64_t value);
+TReturnVal        TreapRemove(TTreap *treap, char *key);
 void              TreapDestroy(TTreap *treap);
 
 
@@ -50,7 +55,7 @@ int main(int argc, char *argv[]) {
         if (input[0] == '+') {
             scanf("%s ""%"SCNu64, input, &value);
             strtolower(input);
-            if (TreapInsert(&treap, input, value) == -1) {
+            if (TreapInsert(&treap, input, value) == FAIL) {
                 printf("Exist\n");
             } else {
                 printf("OK\n");
@@ -58,7 +63,7 @@ int main(int argc, char *argv[]) {
         } else if (input[0] == '-') {
             scanf("%s", input);
             strtolower(input);
-            if (TreapRemove(&treap, input) == -1) {
+            if (TreapRemove(&treap, input) == FAIL) {
                 printf("NoSuchWord\n");
             } else {
                 printf("OK\n");
@@ -171,9 +176,8 @@ TNode *TreapFind(TTreap *treap, const char *key) {
     return NodeSearch(treap->root, key);
 }
 
-// -1 = already exist;
-int TreapInsert(TTreap *treap, const char *key, uint64_t value) {
-    if (treap == NULL) return -1;
+TReturnVal TreapInsert(TTreap *treap, const char *key, uint64_t value) {
+    if (treap == NULL) return FAIL;
     TNode *l = NULL;
     TNode *r = NULL;
     TNode *elem = NULL;
@@ -181,16 +185,15 @@ int TreapInsert(TTreap *treap, const char *key, uint64_t value) {
     elem = NodeGetMinNode(r);
     if (elem != NULL && strcmp(elem->key, key) == 0) {
         treap->root = NodeMerge(l, r);
-        return -1;
+        return FAIL;
     }
     TNode *m = NodeCreate(key, value);
     treap->root = NodeMerge(NodeMerge(l, m), r);
-    return 1;
+    return SUCCESS;
 }
 
-// -1 = no such node;
-int TreapRemove(TTreap *treap, char *key) {
-    if (treap == NULL) return -1;
+TReturnVal TreapRemove(TTreap *treap, char *key) {
+    if (treap == NULL) return FAIL;
     size_t strLen = strlen(key);
     key[strLen + 1] = '\0';
     TNode* l0 = NULL;
@@ -204,11 +207,11 @@ int TreapRemove(TTreap *treap, char *key) {
         NodeDestroy(l);
         treap->root = NodeMerge(l0, r);
         --key[strLen];
-        return 1;
+        return SUCCESS;
     }
     r0 = NodeMerge(l, r);
     treap->root = NodeMerge(l0, r0);
     --key[strLen];
-    return -1;
+    return FAIL;
 }
 
