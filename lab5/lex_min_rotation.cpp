@@ -65,6 +65,7 @@ private:
     size_t root;                           // root of the tree (cannot make it const although it does not change)
     vector<TNode> nodes;                   // storage for all nodes of the tree
     vector<TEdge> edges;                   // storage for all edges of the tree
+    size_t leaves_count = 0;
 
     size_t create_node() {
         TNode new_node; 
@@ -222,7 +223,7 @@ private:
 
     void create_leaf(size_t parent, int char_ind) {
         size_t leaf = create_node();
-        nodes[leaf].leaf_id = char_ind;    // char_ind by definition is leaf_id
+        nodes[leaf].leaf_id = leaves_count++; 
 
         /* acording to Alforithm set length = INF on Edge to the leaf */
         size_t e = create_edge(leaf, char_ind, 1e9); 
@@ -330,8 +331,6 @@ public:
         TNode node = nodes[n];
         for (auto x : node.edges) {
             TEdge e  = edges[x.second];
-#if 0
-            // pretty Tree output
             for (int i = 0; i < TAB_SIZE * (h - 1); ++i) {
                 cout << ' ';
             }
@@ -340,27 +339,17 @@ public:
                 tmp.push_back(data[i + e.begin_index]);
             }
             cout << "|-> {" << tmp <<", " << e.dest_node <<  "}"<< "\n";
-#else
-            // special for testing
-            if (e.begin_index + e.length > data.size()) {
-                cout << e.begin_index << ' ' << data.size() - e.begin_index << '\n';
-            } else {
-                cout << e.begin_index << ' ' << e.length << '\n';
-            }
-#endif
             print(e.dest_node, h + 1);
         }
     }
 
     void Print() {
-        cout << "root" << '\n';
         print(root, 1);
-        return;
     }
 
     string lexic_min_cut() {
         string res;
-        int n = (data.size() >> 1);
+        int n = (data.size() >> 1);        // data = s + s + $
         size_t cur = root;
         while (n > 0) {
             // find lexical min edge
@@ -384,29 +373,11 @@ public:
     }
 };
 
-#define BENCHMARK
-#undef BENCHMARK
-
 int main() {
-#ifdef BENCHMARK
-    struct timespec begin;
-    struct timespec end;
-    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &begin);
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-#endif
-
     string s;
     cin >> s;
     TSuffTree t(s + s + SENTINEL);
-    //t.Print();
     cout << t.lexic_min_cut() << '\n';
-
-#ifdef BENCHMARK
-    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
-    fprintf(stderr,"%lf\n", ((end.tv_sec - begin.tv_sec) + (end.tv_nsec - begin.tv_nsec)/1000000000.0));
-#endif
     return 0;
 }
 
