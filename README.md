@@ -25,7 +25,18 @@ Laboratory work on the course of discrete analysis (Algorithms and Data Structur
    * Number Theoretic Transform (NTT)
    * Karatsuba multiplication  
 7. **[Dynamic programming](https://github.com/Tnirpps/DA_lab/tree/main/lab7)**
+   * ~Tricky backpack~
+   * ~Empty rectangle~
+   * Number of numbers
+   * Moving through the matrix
+   * Palindromes
 8. **[Greedy algorithms](https://github.com/Tnirpps/DA_lab/tree/main/lab8)**
+   * Coin exchange
+   * Segment selection
+   * Maximum triangle
+   * ~Fattening of steers~
+   * Optimal sorting of numbers
+   * Topological sorting
 9. **[Graph algorithms](https://github.com/Tnirpps/DA_lab/tree/main/lab9)**
     * Breadth-first search (BFS)
     * Depth-first search (DFS)
