@@ -1,13 +1,9 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <string>
-#include <cctype>
-#include <cmath>
-#include <map>
 #include <assert.h>
+//#include <map>
 #include <unordered_map>
-#include <time.h>
 #include <queue>
 
 using namespace std;
@@ -438,19 +434,10 @@ public:
 
 };
 
-#define BENCHMARK
-#undef BENCHMARK
-
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-#ifdef BENCHMARK
-    struct timespec begin;
-    struct timespec end;
-    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &begin);
-#endif
-
     string text, pattern;
     cin >> text;
     size_t pattern_id = 0;
@@ -468,12 +455,6 @@ int main() {
             cout << res[i] + 1 << format[i+1==res.size()];
         }
     }
-
-#ifdef BENCHMARK
-    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
-    fprintf(stderr,"%lf\n", ((end.tv_sec - begin.tv_sec) + (end.tv_nsec - begin.tv_nsec)/1000000000.0));
-#endif
     return 0;
 }
-
 

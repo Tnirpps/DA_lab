@@ -17,7 +17,7 @@ Laboratory work on the course of discrete analysis (Algorithms and Data Structur
    * Apostolico–Giancarlo
    * Z-blocks (Z-function)
    * ~Knuth–Morris–Pratt~
-5. **[String suffix structures](https://github.com/Tnirpps/DA_lab/tree/main/lab5)**
+5. **[String suffix structures](https://github.com/Tnirpps/DA_lab/tree/main/lab5)** ✅
    * Suffix tree (Ukkonen's algorithm)
    * Suffix array
 6. **[Bignum arithmetic](https://github.com/Tnirpps/DA_lab/tree/main/lab6)**

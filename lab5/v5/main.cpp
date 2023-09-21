@@ -2,8 +2,6 @@
 #include <vector>
 #include <algorithm>
 #include <string>
-#include <cctype>
-#include <cmath>
 #include <map>
 #include <assert.h>
 #include <unordered_map>
@@ -342,73 +340,20 @@ private:
         }
     }
 
-public:
-    TSuffTree(string s) {
-        data = s;
-        nodes.reserve(2 * data.size());
-        edges.reserve(2 * data.size());
-        
-        root = create_node();
-        state.node = root;
-        build();
-    }
-
-    int TAB_SIZE = 4;
     void print(int n, int h) {
         TNode node = nodes[n];
         for (auto x : node.edges) {
             TEdge e  = edges[x.second];
-#if 1
-            // pretty Tree output
-            for (int i = 0; i < TAB_SIZE * (h - 1); ++i) {
-                cout << ' ';
+            for (int i = 0; i < (h - 1); ++i) {
+                cout << "    ";
             }
             string tmp;
             for (int i = 0; i < e.length && e.begin_index + i < data.size(); ++i) {
                 tmp.push_back(data[i + e.begin_index]);
             }
             cout << "|-> {" << tmp <<", " << e.dest_node << ", " << nodes[e.dest_node].leaf_id <<  "}"<< "\n";
-#else
-            // special for testing
-            if (e.begin_index + e.length > data.size()) {
-                cout << e.begin_index << ' ' << data.size() - e.begin_index << '\n';
-            } else {
-                cout << e.begin_index << ' ' << e.length << '\n';
-            }
-#endif
             print(e.dest_node, h + 1);
         }
-    }
-
-    void Print() {
-        cout << "root" << '\n';
-        print(root, 1);
-        return;
-    }
-
-
-    vector<size_t> find_occurrences(const string& s) {
-        TState st;
-        vector<size_t> res;
-        if (find(s, st) == false) return res;
-        if (st.on_edge) {
-            st.node = edges[st.edge].dest_node;
-        }
-        // BFS
-        queue<size_t> q;
-        q.push(st.node);
-        while (!q.empty()) {
-            size_t u = q.front();
-            q.pop();
-            if (nodes[u].edges.empty()) {
-                res.push_back(nodes[u].leaf_id);
-                continue;
-            }
-            for (pair<char, size_t> x: nodes[u].edges) {
-                q.push(edges[x.second].dest_node);
-            }
-        }
-        return res;
     }
 
     bool find(const string& s, TState& st) {
@@ -425,30 +370,6 @@ public:
             ++i;
         }
         return true;
-    }
-
-    string lexic_min_cut(int n) {
-        string res;
-        size_t cur = root;
-        while (n > 0) {
-            // find lexical min edge
-            char min_char = SENTINEL;
-            size_t next;
-            for (pair<char, size_t> x: nodes[cur].edges) {
-                if (x.first < min_char) {
-                    min_char = x.first;
-                    next = x.second;
-                }
-            }
-            TEdge e = edges[next];
-
-            // go through it
-            for (int i = 0; i < e.length && n--; ++i) {
-                res.push_back(data[e.begin_index + i]);
-            }
-            cur = e.dest_node;
-        }
-        return res;
     }
 
     void set_colors(size_t u, size_t depth, size_t& common_depth) {
@@ -479,6 +400,70 @@ public:
         }
     }
 
+public:
+    TSuffTree(string s) {
+        data = s;
+        nodes.reserve(2 * data.size());
+        edges.reserve(2 * data.size());
+        
+        root = create_node();
+        state.node = root;
+        build();
+    }
+
+    void Print() {
+        print(root, 1);
+        return;
+    }
+
+    vector<size_t> find_occurrences(const string& s) {
+        TState st;
+        vector<size_t> res;
+        if (find(s, st) == false) return res;
+        if (st.on_edge) {
+            st.node = edges[st.edge].dest_node;
+        }
+        // BFS
+        queue<size_t> q;
+        q.push(st.node);
+        while (!q.empty()) {
+            size_t u = q.front();
+            q.pop();
+            if (nodes[u].edges.empty()) {
+                res.push_back(nodes[u].leaf_id);
+                continue;
+            }
+            for (pair<char, size_t> x: nodes[u].edges) {
+                q.push(edges[x.second].dest_node);
+            }
+        }
+        return res;
+    }
+
+    string lexic_min_cut(int n) {
+        string res;
+        size_t cur = root;
+        while (n > 0) {
+            // find lexical min edge
+            char min_char = SENTINEL;
+            size_t next;
+            for (pair<char, size_t> x: nodes[cur].edges) {
+                if (x.first < min_char) {
+                    min_char = x.first;
+                    next = x.second;
+                }
+            }
+            TEdge e = edges[next];
+
+            // go through it
+            for (int i = 0; i < e.length && n--; ++i) {
+                res.push_back(data[e.begin_index + i]);
+            }
+            cur = e.dest_node;
+        }
+        return res;
+    }
+
     vector<string> find_all_longest_common_substrings() {
         vector<string> res;
         size_t len = 0;
@@ -492,19 +477,11 @@ public:
 
 };
 
-#define BENCHMARK
-#undef BENCHMARK
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-#ifdef BENCHMARK
-    struct timespec begin;
-    struct timespec end;
-    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &begin);
-#endif
-
     string s, tmp;
     size_t str_count = 2;                  // amount strings in input to find common substring (no more Than 5 !!!!)
     for (size_t i = 0; i < str_count; ++i) {
@@ -523,12 +500,6 @@ int main() {
     for (string& s: result) {
         cout << s << '\n';
     }
-
-
-#ifdef BENCHMARK
-    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
-    fprintf(stderr,"%lf\n", ((end.tv_sec - begin.tv_sec) + (end.tv_nsec - begin.tv_nsec)/1000000000.0));
-#endif
     return 0;
 }
 
