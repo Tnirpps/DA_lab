@@ -20,17 +20,17 @@ Laboratory work on the course of discrete analysis (Algorithms and Data Structur
 5. **[String suffix structures](https://github.com/Tnirpps/DA_lab/tree/main/lab5)** ✅
    * Suffix tree (Ukkonen's algorithm)
    * Suffix array
-6. **[Bignum arithmetic](https://github.com/Tnirpps/DA_lab/tree/main/lab6)**✅
+6. **[Bignum arithmetic](https://github.com/Tnirpps/DA_lab/tree/main/lab6)** ✅
    * Standard multiplication algorithm
    * Number Theoretic Transform (NTT)
    * Karatsuba multiplication  
-7. **[Dynamic programming](https://github.com/Tnirpps/DA_lab/tree/main/lab7)**✅
+7. **[Dynamic programming](https://github.com/Tnirpps/DA_lab/tree/main/lab7)** ✅
    * ~Tricky backpack~
    * ~Empty rectangle~
    * Number of numbers
    * Moving through the matrix
    * Palindromes
-8. **[Greedy algorithms](https://github.com/Tnirpps/DA_lab/tree/main/lab8)**✅
+8. **[Greedy algorithms](https://github.com/Tnirpps/DA_lab/tree/main/lab8)** ✅
    * Coin exchange
    * Segment selection
    * Maximum triangle
